@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-function AddEmployeeForm({
+function AddManagerForm({
 
   fetchEmployees,
 
@@ -12,41 +12,66 @@ function AddEmployeeForm({
   const [employeeData, setEmployeeData] = useState({
 
     name: "",
+
     email: "",
+
     phone: "",
+
     salary: "",
+
     jobRole: "",
+
     joiningDate: "",
+
     gender: "",
+
     status: "",
+
+    photo: "",
 
     user: {
 
       username: "",
+
       password: "",
-      role: "EMPLOYEE"
+
+      role: "MANAGER"
     },
 
     department: {
 
-      departmentId: 1
+      departmentId: ""
     }
   });
 
+  // FETCH DEPARTMENTS
+
   useEffect(() => {
 
-    fetch("http://localhost:8081/api/departments")
-
-      .then((response) => response.json())
-
-      .then((data) => {
-
-        setDepartments(data);
-      });
+    fetchDepartments();
 
   }, []);
 
-  
+  const fetchDepartments = async () => {
+
+    try {
+
+      const response = await fetch(
+
+        "http://localhost:8081/api/departments"
+      );
+
+      const data = await response.json();
+
+      setDepartments(data);
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+  // HANDLE CHANGE
 
   const handleChange = (e) => {
 
@@ -58,6 +83,8 @@ function AddEmployeeForm({
     });
   };
 
+  // ADD MANAGER
+
   const addEmployee = async (e) => {
 
     e.preventDefault();
@@ -66,7 +93,7 @@ function AddEmployeeForm({
 
     const response = await fetch(
 
-      "http://localhost:8081/api/employees",
+      "http://localhost:8081/api/managers",
 
       {
 
@@ -83,7 +110,7 @@ function AddEmployeeForm({
 
     if (response.ok) {
 
-      alert("Employee Added Successfully");
+      alert("Manager Added Successfully 😎");
 
       fetchEmployees();
 
@@ -92,25 +119,35 @@ function AddEmployeeForm({
       setEmployeeData({
 
         name: "",
+
         email: "",
+
         phone: "",
+
         salary: "",
+
         jobRole: "",
+
         joiningDate: "",
+
         gender: "",
-        photo: "",
+
         status: "",
+
+        photo: "",
 
         user: {
 
           username: "",
+
           password: "",
-          role: "EMPLOYEE"
+
+          role: "MANAGER"
         },
 
         department: {
 
-          departmentId: 1
+          departmentId: ""
         }
       });
 
@@ -120,7 +157,7 @@ function AddEmployeeForm({
 
       console.log(errorText);
 
-      alert("Error while adding employee");
+      alert("Error while adding manager");
     }
   };
 
@@ -135,7 +172,7 @@ function AddEmployeeForm({
         >
 
           <h3>
-            Add Employee
+            Add Manager
           </h3>
 
           <button
@@ -148,8 +185,9 @@ function AddEmployeeForm({
 
               setShowAddEmployee(false);
             }}
+          >
 
-          ></button>
+          </button>
 
         </div>
 
@@ -157,41 +195,66 @@ function AddEmployeeForm({
 
           <div className="row">
 
+            {/* NAME */}
+
             <div className="col-md-6 mb-3">
 
               <input
+
                 type="text"
+
                 name="name"
+
                 placeholder="Enter Name *"
+
                 className="form-control"
+
                 value={employeeData.name}
+
                 onChange={handleChange}
+
                 required
               />
 
             </div>
 
+            {/* EMAIL */}
+
             <div className="col-md-6 mb-3">
 
               <input
+
                 type="email"
+
                 name="email"
+
                 placeholder="Enter Email *"
+
                 className="form-control"
+
                 value={employeeData.email}
+
                 onChange={handleChange}
+
                 required
               />
 
             </div>
 
+            {/* USERNAME */}
+
             <div className="col-md-6 mb-3">
 
               <input
+
                 type="text"
+
                 placeholder="Enter Username *"
+
                 className="form-control"
+
                 autoComplete="off"
+
                 value={employeeData.user.username}
 
                 onChange={(e) =>
@@ -214,13 +277,20 @@ function AddEmployeeForm({
 
             </div>
 
+            {/* PASSWORD */}
+
             <div className="col-md-6 mb-3">
 
               <input
+
                 type="password"
+
                 placeholder="Enter Password *"
+
                 className="form-control"
+
                 autoComplete="new-password"
+
                 value={employeeData.user.password}
 
                 onChange={(e) =>
@@ -243,21 +313,28 @@ function AddEmployeeForm({
 
             </div>
 
+            {/* PHONE */}
+
             <div className="col-md-6 mb-3">
 
               <input
+
                 type="text"
-                name="phone"
+
                 placeholder="Enter 10 Digit Phone Number *"
+
                 className="form-control"
+
                 maxLength="10"
+
                 value={employeeData.phone}
 
                 onChange={(e) => {
 
                   const value = e.target.value;
 
-                  if (/^\d*$/.test(value) && value.length <= 10) {
+                  if (/^\d*$/.test(value)
+                    && value.length <= 10) {
 
                     setEmployeeData({
 
@@ -273,59 +350,95 @@ function AddEmployeeForm({
 
             </div>
 
+            {/* SALARY */}
+
             <div className="col-md-6 mb-3">
 
               <input
+
                 type="number"
+
                 name="salary"
+
                 placeholder="Enter Salary *"
+
                 className="form-control"
+
                 min="1"
+
                 value={employeeData.salary}
+
                 onChange={handleChange}
+
                 required
               />
 
             </div>
+
+            {/* ROLE */}
 
             <div className="col-md-6 mb-3">
 
               <input
+
                 type="text"
+
                 name="jobRole"
+
                 placeholder="Enter Job Role *"
+
                 className="form-control"
+
                 value={employeeData.jobRole}
+
                 onChange={handleChange}
+
                 required
               />
 
             </div>
+
+            {/* JOINING DATE */}
 
             <div className="col-md-6 mb-3">
 
               <label className="mb-1">
+
                 Joining Date *
+
               </label>
 
               <input
+
                 type="date"
+
                 name="joiningDate"
+
                 className="form-control"
+
                 value={employeeData.joiningDate}
+
                 onChange={handleChange}
+
                 required
               />
 
             </div>
 
+            {/* GENDER */}
+
             <div className="col-md-6 mb-3">
 
               <select
+
                 name="gender"
+
                 className="form-control"
+
                 value={employeeData.gender}
+
                 onChange={handleChange}
+
                 required
               >
 
@@ -345,13 +458,20 @@ function AddEmployeeForm({
 
             </div>
 
+            {/* STATUS */}
+
             <div className="col-md-6 mb-3">
 
               <select
+
                 name="status"
+
                 className="form-control"
+
                 value={employeeData.status}
+
                 onChange={handleChange}
+
                 required
               >
 
@@ -371,92 +491,104 @@ function AddEmployeeForm({
 
             </div>
 
-         <div className="col-md-6 mb-3">
+            {/* DEPARTMENT */}
 
-  <select
+            <div className="col-md-6 mb-3">
 
-    className="form-control"
+              <select
 
-    value={employeeData.department.departmentId}
+                className="form-control"
 
-    onChange={(e) =>
+                value={employeeData.department.departmentId}
 
-      setEmployeeData({
+                onChange={(e) =>
 
-        ...employeeData,
+                  setEmployeeData({
 
-        department: {
+                    ...employeeData,
 
-          departmentId: Number(e.target.value)
-        }
-      })
-    }
-  >
+                    department: {
 
-    <option value="">
-      Select Department
-    </option>
+                      departmentId:
+                        Number(e.target.value)
+                    }
+                  })
+                }
 
-    {
-      departments.map((department) => (
+                required
+              >
 
-        <option
-          key={department.departmentId}
+                <option value="">
+                  Select Department
+                </option>
 
-          value={department.departmentId}
-        >
+                {
 
-          {department.departmentName}
+                  departments.map((dept) => (
 
-        </option>
-      ))
-    }
+                    <option
 
-  </select>
+                      key={dept.departmentId}
 
-</div>
+                      value={dept.departmentId}
+                    >
 
-<div className="col-md-6 mb-3">
+                      {dept.departmentName}
 
-  <input
-    type="file"
-    className="form-control"
+                    </option>
+                  ))
+                }
 
-    onChange={(e) => {
+              </select>
 
-      const file = e.target.files[0];
+            </div>
 
-      const reader = new FileReader();
+            {/* PHOTO */}
 
-      reader.onloadend = () => {
+            <div className="col-md-6 mb-3">
 
-        setEmployeeData({
+              <input
 
-          ...employeeData,
+                type="file"
 
-          photo: reader.result
-        });
-      };
+                className="form-control"
 
-      if(file){
+                accept="image/*"
 
-        reader.readAsDataURL(file);
-      }
-    }}
+                onChange={(e) => {
 
-    required
-  />
+                  const file = e.target.files[0];
 
-</div>
+                  const reader = new FileReader();
+
+                  reader.readAsDataURL(file);
+
+                  reader.onloadend = () => {
+
+                    setEmployeeData({
+
+                      ...employeeData,
+
+                      photo: reader.result
+                    });
+                  };
+                }}
+
+                required
+              />
+
+            </div>
 
           </div>
 
           <button
+
             type="submit"
+
             className="btn btn-success"
           >
 
-            Add Employee
+            Add Manager
 
           </button>
 
@@ -468,4 +600,4 @@ function AddEmployeeForm({
   );
 }
 
-export default AddEmployeeForm;
+export default AddManagerForm;

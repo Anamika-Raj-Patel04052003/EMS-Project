@@ -1,5 +1,4 @@
-import AddEmployeeForm
-from "./AddEmployeeForm";
+import AddEmployeeForm from "./AddEmployeeForm";
 
 import {
   useEffect,
@@ -22,14 +21,13 @@ import {
 
 import jsPDF from "jspdf";
 
-import autoTable
-from "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
-import * as XLSX
-from "xlsx";
+import * as XLSX from "xlsx";
 
-import { saveAs }
-from "file-saver";
+import { saveAs } from "file-saver";
+
+import ResumeAnalyzer from "./ResumeAnalyzer";
 
 
 import {
@@ -439,6 +437,8 @@ style={{
           Manager Dashboard
         </h1>
 
+        <ResumeAnalyzer />
+
         <button
   className=
   "btn btn-success mt-3"
@@ -719,11 +719,7 @@ style={{
 >
 
   {
-    showEmployees
-
-    ? "Hide Employees"
-
-    : "Show Employees"
+    showEmployees ? "Hide Employees" : "Show Employees"
   }
 
 </button>
@@ -769,6 +765,7 @@ style={{
 
                  <th>ID</th>
 <th>Name</th>
+<th>Photo</th>
 <th>Email</th>
 <th>Phone</th>
 <th>Salary</th>
@@ -822,6 +819,27 @@ style={{
                     <td>{emp.id}</td>
 
 <td>{emp.name}</td>
+
+<td>
+
+  <img
+    src={emp.photo}
+    alt="employee"
+
+    width="90"
+    height="90"
+
+    style={{
+
+      objectFit: "cover",
+
+      borderRadius: "0px",
+
+      border: "1px solid #ccc"
+    }}
+  />
+
+</td>
 
 <td>{emp.email}</td>
 
